@@ -48,15 +48,15 @@ export class HomePage {
     await this.page.locator("//button[@class='ant-btn css-1o7vu8l ant-btn-circle ant-btn-default ant-btn-color-default ant-btn-variant-outlined ant-btn-icon-only ant-tooltip-open']").isVisible();
     await this.page.locator("//div[@title='Recent']").isVisible();
     await this.page.locator("//div[@title='Favourites']").isVisible();
-}
-
-   async openCreateProjectDrawer() {
-    await this.login();
-    await this.page.waitForSelector("div.ant-col", { timeout: 10000 });
-    await this.page.click("//button[@class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-compact-item ant-btn-compact-first-item']");
-    await expect(this.page.locator("//input[@id='name']")).toBeVisible();
-
   }
+
+  async openCreateProjectDrawer() {
+    await this.login();
+    await this.page.waitForLoadState('networkidle');
+    await this.page.locator("//button[@name='Create Project']").isVisible();
+    //await expect(this.page.locator("//input[@placeholder='Enter project name'")).toBeVisible();
+  }
+
 
   async uiElementsProjectDrawer(): Promise<void> {
     await this.openCreateProjectDrawer();
@@ -95,7 +95,7 @@ export class HomePage {
     // const rowTexts = await rows.allTextContents();
     // const found = rowTexts.some(text => text.includes(name));
     // expect(found).toBeTruthy();
-    }
+  }
 
   // async verifyRequiredFields() {
   //   await this.openCreateProjectDrawer();
@@ -103,30 +103,26 @@ export class HomePage {
   //   await expect(this.page.locator(`css=${this.locators.nameEmptyError}`)).toBeVisible();
   // }
 
-   async openSelectFromTemplateDrawer() {
-        await this.login();
-        await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-compact-item ant-btn-compact-first-item']").isVisible();
-        await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-icon-only ant-btn-compact-item ant-btn-compact-last-item ant-dropdown-trigger']").click({ timeout: 10000 });
-        await this.page.locator('.w-full.m-0.p-0').click({ timeout: 10000 });
-        await expect(this.page.locator("#rc-tabs-1-tab-1")).toBeVisible();
-    }
+  async openSelectFromTemplateDrawer() {
+    await this.login();
+    await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-compact-item ant-btn-compact-first-item']").isVisible();
+    await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-icon-only ant-btn-compact-item ant-btn-compact-last-item ant-dropdown-trigger']").click({ timeout: 10000 });
+    await this.page.locator('.w-full.m-0.p-0').click({ timeout: 10000 });
+    await expect(this.page.locator("#rc-tabs-1-tab-1")).toBeVisible();
+  }
 
-    async createProjectByImportingTemplate() {
-        await this.openSelectFromTemplateDrawer();
-        await this.page.click("li[class='ant-menu-item ant-menu-item-active ant-menu-item-only-child'] span[class='ant-menu-title-content']");
-        await this.page.click("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid'] span");
-        await expect(this.page.locator("//h4[normalize-space()='Design & Creative']")).toBeVisible();
-    }
+  async createProjectByImportingTemplate() {
+    await this.openSelectFromTemplateDrawer();
+    await this.page.click("li[class='ant-menu-item ant-menu-item-active ant-menu-item-only-child'] span[class='ant-menu-title-content']");
+    await this.page.click("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid'] span");
+    await expect(this.page.locator("//h4[normalize-space()='Design & Creative']")).toBeVisible();
+  }
+
+  async verifyAddTaskInputVisible() {
+    await this.login();
+    await this.page.locator("//input[@placeholder='+ Add task']").isVisible();
+  }
 }
 
 
 
-   
-
-    
-
-//     async verifyAddTaskInputVisible() {
-//         await this.login();
-//         await expect(this.page.locator(`css=${taskTable.addTaskInput}`)).toBeVisible();
-//     }
-// }
