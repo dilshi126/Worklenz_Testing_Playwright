@@ -12,12 +12,12 @@ import { HomePage } from '../pages/home';
 // }); 
 
 
-test.describe(' Project Drawer Tests', () => {
-    test('Open create project drawer', async ({ page }) => {
-        const home = new HomePage(page);
-        await home.openCreateProjectDrawer();
-    });
-});
+// test.describe(' Project Drawer Tests', () => {
+//     test('Open create project drawer', async ({ page }) => {
+//         const home = new HomePage(page);
+//         await home.openCreateProjectDrawer();
+//     });
+// });
 
 // test.describe('Project drawer UI Tests',() => {
 //     test('Project drawer UI elements', async ({ page }) => {
@@ -56,3 +56,15 @@ test.describe(' Project Drawer Tests', () => {
 //         await home.verifyAddTaskInputVisible();
 //     });
 // });
+
+test.describe('Add task t the task table', () => {
+    test('Verify adding a task', async ({ page }) => {
+        const home = new HomePage(page);
+        await home.verifyAddingTask();
+    });
+});
+
+
+
+
+//npx playwright test 

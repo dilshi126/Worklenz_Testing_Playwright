@@ -122,6 +122,14 @@ export class HomePage {
     await this.login();
     await this.page.locator("//input[@placeholder='+ Add task']").isVisible();
   }
+
+  async verifyAddingTask() {
+    await this.verifyAddTaskInputVisible();
+    await this.page.locator("//input[@placeholder='+ Add task']").fill("New Task");
+    // await this.page.keyboard.press('Enter');
+    // await expect(this.page.locator('span.ant-select-selection-item[title="Today"]')).toBeVisible();
+    // await expect(this.page.locator("//div[contains(text(), 'New Task')]")).toBeVisible();
+  }
 }
 
 
