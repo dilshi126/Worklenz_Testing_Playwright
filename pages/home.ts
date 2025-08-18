@@ -123,14 +123,56 @@ export class HomePage {
     await this.page.locator("//input[@placeholder='+ Add task']").isVisible();
   }
 
-  async verifyAddingTask() {
-    await this.verifyAddTaskInputVisible();
-    await this.page.locator("//input[@placeholder='+ Add task']").fill("New Task");
-    // await this.page.keyboard.press('Enter');
-    // await expect(this.page.locator('span.ant-select-selection-item[title="Today"]')).toBeVisible();
-    // await expect(this.page.locator("//div[contains(text(), 'New Task')]")).toBeVisible();
+  async verifyAddingTask(taskName : string = "New Task") {
+    await this.login();
+    await this.page.fill("input[placeholder='+ Add task']", taskName);
+    // await expect(this.page.locator("input[placeholder='+ Add task']")).toBeVisible();
+    // await this.page.locator("//input[@placeholder='+ Add task']").fill("New Task");
+    await this.page.keyboard.press('Enter');
+    await expect(this.page.locator("span[title='Today']")).toBeVisible();
+    await this.page.locator("span[title='Today']").click();
+    await this.page.locator("div[title='Today'] div[class='ant-select-item-option-content']").click();
+    await expect(this.page.locator("#project")).toBeVisible();
+    await this.page.locator("#project").click();
+    await this.page.locator("div[title='Accounts'] div[class='ant-select-item-option-content']").click();
   }
+
+  async updateTaskStatus(taskName: "New Task", newStatus: "Doing") {
+    await this.verifyAddingTask();
+    await this.page.waitForTimeout(500); // Adjust timeout as needed
+    const taskRow = this.page.locator(`td:has-text("${taskName}")`).first();
+    await expect(taskRow).toBeVisible();
+
+    // Locate the status dropdown in the same row
+    const statusDropdown = taskRow.locator("xpath=//div[@class='ant-select ant-select-borderless css-1o7vu8l ant-select-single ant-select-show-arrow ant-select-open']//div[@class='ant-select-selector']') || taskRow.locator('xpath=..//td[last()] button");
+    await statusDropdown.click();
+
+    await this.page.locator(`option[value="${newStatus}"]`).first().click();
+    // Or, if it's a custom dropdown, use something like:
+    // await this.page.locator(`text=${newStatus}`).click();
+
+    // Verify the status has been updated
+    await expect(taskRow.locator(`xpath=..//td[last()]`).textContent()).resolves.toContain(newStatus);
+  }
+
+  async checkTaskStatuses() {
+    // Locate all status elements in the task table
+    const statusCells = await this.page.locator("tbody tr:nth-child(1) td:nth-child(3)"); // Adjust selector based on table structure
+    const statuses = await statusCells.allTextContents();
+
+    // Verify that no "Done" status exists
+    const hasDoneStatus = statuses.some(status => status.trim().toLowerCase() === 'done');
+    expect(hasDoneStatus).toBe(false);
+
+    // Optionally verify only "To Do" and "Doing" are present
+    const allowedStatuses = ['To Do', 'Doing'];
+    statuses.forEach(status => {
+      expect(allowedStatuses.includes(status.trim())).toBe(true);
+    });
+  }
+
+   
+
+
+
 }
-
-
-

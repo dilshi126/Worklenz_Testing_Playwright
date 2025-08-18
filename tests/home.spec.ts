@@ -64,6 +64,12 @@ test.describe('Add task t the task table', () => {
     });
 });
 
+test.describe('Update the status of a task', () => {
+    test('Verify updating a task status', async ({ page }) => {
+        const home = new HomePage(page);
+        await home.updateTaskStatus("New Task", "Doing");
+    });
+});
 
 
 
