@@ -171,6 +171,7 @@ export class HomePage {
 
   async verifyOpeningTask(){
     await this.login();
+    
    
   }
 

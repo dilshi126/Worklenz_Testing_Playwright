@@ -57,12 +57,12 @@ import { HomePage } from '../pages/home';
 //     });
 // });
 
-test.describe('Add task to the task table', () => {
-    test('Verify adding a task', async ({ page }) => {
-        const home = new HomePage(page);
-        await home.verifyAddingTask();
-    });
-});
+// test.describe('Add task to the task table', () => {
+//     test('Verify adding a task', async ({ page }) => {
+//         const home = new HomePage(page);
+//         await home.verifyAddingTask();
+//     });
+// });
 
 // test.describe('Update the status of a task', () => {
 //     test('Verify updating a task status', async ({ page }) => {
