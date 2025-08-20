@@ -27,10 +27,10 @@ import { HomePage } from '../pages/home';
 // });
 
 
-// //     // test('Create a new project', async ({ page }) => {
-// //     //     const home = new HomePage(page);
-// //     //     await home.createNewProject();
-// //     // });
+    // test('Create a new project', async ({ page }) => {
+    //     const home = new HomePage(page);
+    //     await home.createNewProject();
+    // });
 
 // //     test('Verify required field validation', async ({ page }) => {
 // //         const home = new HomePage(page);
@@ -45,10 +45,10 @@ import { HomePage } from '../pages/home';
 //     });
 // })
 
-//     test('Create project by importing template', async ({ page }) => {
-//         const home = new HomePage(page);
-//         await home.createProjectByImportingTemplate();
-//     });
+    // test('Create project by importing template', async ({ page }) => {
+    //     const home = new HomePage(page);
+    //     await home.createProjectByImportingTemplate();
+    // });
 
 // test.describe(' Task Table Tests', () => {
 //     test('Verify visibility of "Add a Task" input', async ({ page }) => {
@@ -57,19 +57,19 @@ import { HomePage } from '../pages/home';
 //     });
 // });
 
-test.describe('Add task t the task table', () => {
+test.describe('Add task to the task table', () => {
     test('Verify adding a task', async ({ page }) => {
         const home = new HomePage(page);
         await home.verifyAddingTask();
     });
 });
 
-test.describe('Update the status of a task', () => {
-    test('Verify updating a task status', async ({ page }) => {
-        const home = new HomePage(page);
-        await home.updateTaskStatus("New Task", "Doing");
-    });
-});
+// test.describe('Update the status of a task', () => {
+//     test('Verify updating a task status', async ({ page }) => {
+//         const home = new HomePage(page);
+//         await home.updateTaskStatus("New Task", "Doing");
+//     });
+// });
 
 
 

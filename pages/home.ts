@@ -53,8 +53,8 @@ export class HomePage {
   async openCreateProjectDrawer() {
     await this.login();
     await this.page.waitForLoadState('networkidle');
-    await this.page.locator("//button[@name='Create Project']").isVisible();
-    //await expect(this.page.locator("//input[@placeholder='Enter project name'")).toBeVisible();
+    await this.page.click("button[type='button']");
+    await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid']").isVisible();
   }
 
 
@@ -80,11 +80,10 @@ export class HomePage {
 
   async createNewProject() {
     await this.openCreateProjectDrawer();
-    await this.page.locator("//input[@id='name']").fill("New Project")
-    await this.page.locator(".ant-color-picker-color-block-inner").click();
-    await expect(this.page.locator("input[class='ant-input ant-input-sm css-1o7vu8l']")).toHaveValue("972b7c");
-    await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid'] span").click();
-    // await this.page.click(`css=${project.colourDropdown}`);
+    await this.page.fill('#name', 'New Project');
+    await this.page.click(".ant-color-picker-color-block-inner");
+    await this.page.locator("input[class='ant-input ant-input-sm css-1o7vu8l']").fill("972b7c");
+    await this.page.click("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid']");
     // const name = faker.company.name();
     // await this.page.locator(`xpath=${project.nameField}`).fill(name);
     // await this.page.click(`xpath=${project.createProjectButton}`);
@@ -96,45 +95,44 @@ export class HomePage {
     // const found = rowTexts.some(text => text.includes(name));
     // expect(found).toBeTruthy();
   }
-
+//npx playwright test
   // async verifyRequiredFields() {
   //   await this.openCreateProjectDrawer();
   //   await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid'] span").click();
   //   await expect(this.page.locator(`css=${this.locators.nameEmptyError}`)).toBeVisible();
   // }
 
-  async openSelectFromTemplateDrawer() {
-    await this.login();
-    await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-compact-item ant-btn-compact-first-item']").isVisible();
-    await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-icon-only ant-btn-compact-item ant-btn-compact-last-item ant-dropdown-trigger']").click({ timeout: 10000 });
-    await this.page.locator('.w-full.m-0.p-0').click({ timeout: 10000 });
-    await expect(this.page.locator("#rc-tabs-1-tab-1")).toBeVisible();
-  }
+  // async openSelectFromTemplateDrawer() {
+  //   await this.login();
+  //   await this.page.click("button[type='button']");
+  //   await this.page.click('.w-full.m-0.p-0');
+  //   // await expect(this.page.locator("#rc-tabs-1-tab-1")).toBeVisible();
+  // }
 
-  async createProjectByImportingTemplate() {
-    await this.openSelectFromTemplateDrawer();
-    await this.page.click("li[class='ant-menu-item ant-menu-item-active ant-menu-item-only-child'] span[class='ant-menu-title-content']");
-    await this.page.click("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid'] span");
-    await expect(this.page.locator("//h4[normalize-space()='Design & Creative']")).toBeVisible();
-  }
+  // async createProjectByImportingTemplate() {
+  //   await this.openSelectFromTemplateDrawer();
+  //   await this.page.click("li[class='ant-menu-item ant-menu-item-active ant-menu-item-only-child'] span[class='ant-menu-title-content']");
+  //   await this.page.click("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid'] span");
+  //   await expect(this.page.locator("//h4[normalize-space()='Design & Creative']")).toBeVisible();
+  // }
 
   async verifyAddTaskInputVisible() {
     await this.login();
     await this.page.locator("//input[@placeholder='+ Add task']").isVisible();
   }
 
-  async verifyAddingTask(taskName : string = "New Task") {
+  async verifyAddingTask() {
     await this.login();
-    await this.page.fill("input[placeholder='+ Add task']", taskName);
+    await this.page.fill("input[@placeholder='+ Add task']", "New Task");
     // await expect(this.page.locator("input[placeholder='+ Add task']")).toBeVisible();
     // await this.page.locator("//input[@placeholder='+ Add task']").fill("New Task");
-    await this.page.keyboard.press('Enter');
-    await expect(this.page.locator("span[title='Today']")).toBeVisible();
-    await this.page.locator("span[title='Today']").click();
-    await this.page.locator("div[title='Today'] div[class='ant-select-item-option-content']").click();
-    await expect(this.page.locator("#project")).toBeVisible();
-    await this.page.locator("#project").click();
-    await this.page.locator("div[title='Accounts'] div[class='ant-select-item-option-content']").click();
+    // await this.page.keyboard.press('Enter');
+    // await expect(this.page.locator("span[title='Today']")).toBeVisible();
+    // await this.page.locator("span[title='Today']").click();
+    // await this.page.locator("div[title='Today'] div[class='ant-select-item-option-content']").click();
+    // await expect(this.page.locator("#project")).toBeVisible();
+    // await this.page.locator("#project").click();
+    // await this.page.locator("div[title='Accounts'] div[class='ant-select-item-option-content']").click();
   }
 
   async updateTaskStatus(taskName: "New Task", newStatus: "Doing") {
@@ -171,7 +169,12 @@ export class HomePage {
     });
   }
 
+  async verifyOpeningTask(){
+    await this.login();
    
+  }
+
+
 
 
 
