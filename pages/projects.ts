@@ -101,7 +101,37 @@ export class ProjectsPage {
 
   async verifyArchiveProject() {
     await this.login();
-    await this.page.click("body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > main:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(3) > tr:nth-child(1) > td:nth-child(9) > div:nth-child(1) > div:nth-child(2) > button:nth-child(1) > span:nth-child(1)");
+    await this.page.click("body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > main:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(3) > tr:nth-child(2) > td:nth-child(9) > div:nth-child(1) > div:nth-child(2) > button:nth-child(1)");
+    await this.page.click("div[class='ant-popover css-1o7vu8l css-1o7vu8l ant-popconfirm ant-popover-placement-top'] button:nth-child(2) span:nth-child(1)");
+    await this.page.waitForTimeout(2000); // Wait for the action to complete
+    await this.page.locator("div[title='Archived']").click();
+    const archivedProject = await this.page.locator("tbody tr:nth-child(1) td:nth-child(2)").textContent();
+    expect(archivedProject).toBe("Bug Reporting"); // Ensure the project is archived
   }
+
+  async verifyUnarchiveProjects() {
+    await this.login();
+    await this.page.locator("div[title='Archived']").click();
+    await this.page.click("body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > main:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(3) > tr:nth-child(2) > td:nth-child(9) > div:nth-child(1) > div:nth-child(2) > button:nth-child(1)"); 
+}
+
+async verifyFilterProjectsByCategory() {
+    await this.login();
+    await this.page.click("label[class='ant-segmented-item'] span:nth-child(2)");
+    await this.page.click("span[title='Category']");
+    await this.page.waitForTimeout(2000); 
+    await this.page.click("div[title='Client'] div[class='ant-select-item-option-content']");
+    const myProjects = await this.page.locator("tbody tr");
+    const count = await myProjects.count();
+    expect(count).toBeGreaterThan(0); // Ensure at least one project is listed
+}
+
+async verifyOpenProjectDetails() {
+    await this.login();
+    await this.page.click("body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > main:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(3) > tr:nth-child(7) > td:nth-child(2) > div:nth-child(1)");
+    await this.page.waitForLoadState('networkidle');
+    await expect(this.page.locator("body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > main:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2)")).toBeVisible();
+  }
+
 }
 //npx playwright test
