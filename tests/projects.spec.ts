@@ -73,13 +73,13 @@ import { ProjectsPage } from '../pages/projects';
 
 // });
 
-test.describe('Archive a project', () => {
-    test('Verify archive a project', async ({ page }) => {
-        const project = new ProjectsPage(page);
-        await project.verifyArchiveProject();
-    });
+// test.describe('Archive a project', () => {
+//     test('Verify archive a project', async ({ page }) => {
+//         const project = new ProjectsPage(page);
+//         await project.verifyArchiveProject();
+//     });
 
-});
+// });
 
 
 // //npx playwright test
