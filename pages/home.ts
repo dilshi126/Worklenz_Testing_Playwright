@@ -48,15 +48,15 @@ export class HomePage {
     await this.page.locator("//button[@class='ant-btn css-1o7vu8l ant-btn-circle ant-btn-default ant-btn-color-default ant-btn-variant-outlined ant-btn-icon-only ant-tooltip-open']").isVisible();
     await this.page.locator("//div[@title='Recent']").isVisible();
     await this.page.locator("//div[@title='Favourites']").isVisible();
-}
-
-   async openCreateProjectDrawer() {
-    await this.login();
-    await this.page.waitForSelector("div.ant-col", { timeout: 10000 });
-    await this.page.click("//button[@class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-compact-item ant-btn-compact-first-item']");
-    await expect(this.page.locator("//input[@id='name']")).toBeVisible();
-
   }
+
+  async openCreateProjectDrawer() {
+    await this.login();
+    await this.page.waitForLoadState('networkidle');
+    await this.page.click("button[type='button']");
+    await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid']").isVisible();
+  }
+
 
   async uiElementsProjectDrawer(): Promise<void> {
     await this.openCreateProjectDrawer();
@@ -80,11 +80,10 @@ export class HomePage {
 
   async createNewProject() {
     await this.openCreateProjectDrawer();
-    await this.page.locator("//input[@id='name']").fill("New Project")
-    await this.page.locator(".ant-color-picker-color-block-inner").click();
-    await expect(this.page.locator("input[class='ant-input ant-input-sm css-1o7vu8l']")).toHaveValue("972b7c");
-    await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid'] span").click();
-    // await this.page.click(`css=${project.colourDropdown}`);
+    await this.page.fill('#name', 'New Project');
+    await this.page.click(".ant-color-picker-color-block-inner");
+    await this.page.locator("input[class='ant-input ant-input-sm css-1o7vu8l']").fill("972b7c");
+    await this.page.click("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid']");
     // const name = faker.company.name();
     // await this.page.locator(`xpath=${project.nameField}`).fill(name);
     // await this.page.click(`xpath=${project.createProjectButton}`);
@@ -95,38 +94,89 @@ export class HomePage {
     // const rowTexts = await rows.allTextContents();
     // const found = rowTexts.some(text => text.includes(name));
     // expect(found).toBeTruthy();
-    }
-
+  }
+//npx playwright test
   // async verifyRequiredFields() {
   //   await this.openCreateProjectDrawer();
   //   await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid'] span").click();
   //   await expect(this.page.locator(`css=${this.locators.nameEmptyError}`)).toBeVisible();
   // }
 
-   async openSelectFromTemplateDrawer() {
-        await this.login();
-        await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-compact-item ant-btn-compact-first-item']").isVisible();
-        await this.page.locator("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-icon-only ant-btn-compact-item ant-btn-compact-last-item ant-dropdown-trigger']").click({ timeout: 10000 });
-        await this.page.locator('.w-full.m-0.p-0').click({ timeout: 10000 });
-        await expect(this.page.locator("#rc-tabs-1-tab-1")).toBeVisible();
-    }
+  // async openSelectFromTemplateDrawer() {
+  //   await this.login();
+  //   await this.page.click("button[type='button']");
+  //   await this.page.click('.w-full.m-0.p-0');
+  //   // await expect(this.page.locator("#rc-tabs-1-tab-1")).toBeVisible();
+  // }
 
-    async createProjectByImportingTemplate() {
-        await this.openSelectFromTemplateDrawer();
-        await this.page.click("li[class='ant-menu-item ant-menu-item-active ant-menu-item-only-child'] span[class='ant-menu-title-content']");
-        await this.page.click("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid'] span");
-        await expect(this.page.locator("//h4[normalize-space()='Design & Creative']")).toBeVisible();
-    }
-}
+  // async createProjectByImportingTemplate() {
+  //   await this.openSelectFromTemplateDrawer();
+  //   await this.page.click("li[class='ant-menu-item ant-menu-item-active ant-menu-item-only-child'] span[class='ant-menu-title-content']");
+  //   await this.page.click("button[class='ant-btn css-1o7vu8l ant-btn-primary ant-btn-color-primary ant-btn-variant-solid'] span");
+  //   await expect(this.page.locator("//h4[normalize-space()='Design & Creative']")).toBeVisible();
+  // }
 
+  async verifyAddTaskInputVisible() {
+    await this.login();
+    await this.page.locator("//input[@placeholder='+ Add task']").isVisible();
+  }
 
+  async verifyAddingTask() {
+    await this.login();
+    await this.page.fill("input[@placeholder='+ Add task']", "New Task");
+    // await expect(this.page.locator("input[placeholder='+ Add task']")).toBeVisible();
+    // await this.page.locator("//input[@placeholder='+ Add task']").fill("New Task");
+    // await this.page.keyboard.press('Enter');
+    // await expect(this.page.locator("span[title='Today']")).toBeVisible();
+    // await this.page.locator("span[title='Today']").click();
+    // await this.page.locator("div[title='Today'] div[class='ant-select-item-option-content']").click();
+    // await expect(this.page.locator("#project")).toBeVisible();
+    // await this.page.locator("#project").click();
+    // await this.page.locator("div[title='Accounts'] div[class='ant-select-item-option-content']").click();
+  }
 
-   
+  async updateTaskStatus(taskName: "New Task", newStatus: "Doing") {
+    await this.verifyAddingTask();
+    await this.page.waitForTimeout(500); // Adjust timeout as needed
+    const taskRow = this.page.locator(`td:has-text("${taskName}")`).first();
+    await expect(taskRow).toBeVisible();
 
+    // Locate the status dropdown in the same row
+    const statusDropdown = taskRow.locator("xpath=//div[@class='ant-select ant-select-borderless css-1o7vu8l ant-select-single ant-select-show-arrow ant-select-open']//div[@class='ant-select-selector']') || taskRow.locator('xpath=..//td[last()] button");
+    await statusDropdown.click();
+
+    await this.page.locator(`option[value="${newStatus}"]`).first().click();
+    // Or, if it's a custom dropdown, use something like:
+    // await this.page.locator(`text=${newStatus}`).click();
+
+    // Verify the status has been updated
+    await expect(taskRow.locator(`xpath=..//td[last()]`).textContent()).resolves.toContain(newStatus);
+  }
+
+  async checkTaskStatuses() {
+    // Locate all status elements in the task table
+    const statusCells = await this.page.locator("tbody tr:nth-child(1) td:nth-child(3)"); // Adjust selector based on table structure
+    const statuses = await statusCells.allTextContents();
+
+    // Verify that no "Done" status exists
+    const hasDoneStatus = statuses.some(status => status.trim().toLowerCase() === 'done');
+    expect(hasDoneStatus).toBe(false);
+
+    // Optionally verify only "To Do" and "Doing" are present
+    const allowedStatuses = ['To Do', 'Doing'];
+    statuses.forEach(status => {
+      expect(allowedStatuses.includes(status.trim())).toBe(true);
+    });
+  }
+
+  async verifyOpeningTask(){
+    await this.login();
     
+   
+  }
 
-//     async verifyAddTaskInputVisible() {
-//         await this.login();
-//         await expect(this.page.locator(`css=${taskTable.addTaskInput}`)).toBeVisible();
-//     }
-// }
+
+
+
+
+}
